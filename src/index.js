@@ -1,10 +1,13 @@
 const path = require("path"); // Updated import
 const express = require("express");
 const morgan = require("morgan");
+
 const { engine } = require("express-handlebars"); // Updated import
 const { log } = require("console");
 const app = express();
 const port = 3000;
+
+const route = require("./resources/routes/index"); // Updated path
 
 // HTTP logger
 // app.use(morgan("combined"));
@@ -21,27 +24,7 @@ app.engine(
 app.set("view engine", "hbs");
 app.set("views", path.join(__dirname, "resources\\views")); // Updated path
 // Routes
-app.get("/", (req, res) => {
-  res.render("home");
-});
-
-app.get("/news", (req, res) => {
-  res.render("news");
-});
-
-app.get("/search", (req, res) => {
-  console.log(`query`, {
-    query: req.query.name,
-    url: req.url,
-    method: req.method,
-  });
-  res.render("search");
-});
-
-app.post("/search", (req, res) => {
-  console.log(`body`, req.body);
-  res.send("");
-});
+route(app);
 
 // Start the server
 app.listen(port, () => {
